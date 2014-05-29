@@ -48,6 +48,7 @@ tools/editconf.py /etc/roundcube/main.inc.php \
 	"\$rcmail_config['junk_mbox']='Spam';" \
 	"\$rcmail_config['default_folders']=array('INBOX', 'Drafts', 'Sent', 'Spam', 'Trash');" \
 	"\$rcmail_config['draft_autosave']=30;" \
+	"\$rcmail_config['username_domain']='$PUBLIC_HOSTNAME';" \
 	"\$rcmail_config['plugins']=array('password');"
 
 # Password changing plugin settings
