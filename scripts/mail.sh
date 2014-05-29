@@ -242,8 +242,3 @@ chown -R mail.mail $STORAGE_ROOT/mail/mailboxes
 service postfix restart
 service dovecot restart
 
-# Allow mail-related ports in the firewall.
-ufw_allow smtp
-ufw_allow submission
-ufw_allow imaps
-

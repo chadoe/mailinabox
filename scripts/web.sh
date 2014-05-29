@@ -31,8 +31,3 @@ update-rc.d php-fastcgi defaults
 # Start services.
 service nginx restart
 service php-fastcgi restart
-
-# Open ports.
-ufw_allow http
-ufw_allow https
-

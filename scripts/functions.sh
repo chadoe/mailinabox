@@ -18,11 +18,3 @@ function apt_install {
 	# 'DEBIAN_FRONTEND=noninteractive' is to prevent dbconfig-common from asking you questions.
 	DEBIAN_FRONTEND=noninteractive apt-get -qq -y install $PACKAGES > /dev/null;
 }
-
-function ufw_allow {
-	if [ -z "$DISABLE_FIREWALL" ]; then
-		# ufw has completely unhelpful output
-		ufw allow $1 > /dev/null;
-	fi
-}
-
