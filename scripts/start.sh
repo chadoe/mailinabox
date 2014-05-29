@@ -20,17 +20,15 @@ if [ -z "$PUBLIC_HOSTNAME" ]; then
 	echo
 	echo "Enter the hostname you want to assign to this machine."
 	echo "We've guessed a value. Just backspace it if it's wrong."
-	echo "Josh uses box.occams.info as his hostname. Yours should"
-	echo "be similar."
+	echo "Should be simulare to 'domain.com'"
 	echo
 	read -e -i "`hostname`" -p "Hostname: " PUBLIC_HOSTNAME
 fi
 
 if [ -z "$PUBLIC_IP" ]; then
 	echo
-	echo "Enter the public IP address of this machine, as given to"
-	echo "you by your ISP. We've guessed a value, but just backspace"
-	echo "it if it's wrong."
+	echo "Enter the public IP address of this machine."
+	echo "We've guessed a value, but just backspace it if it's wrong."
 	echo
 	read -e -i "`hostname -i`" -p "Public IP: " PUBLIC_IP
 fi

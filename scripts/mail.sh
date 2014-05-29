@@ -25,8 +25,50 @@ mkdir -p $STORAGE_ROOT/mail
 # POSTFIX
 #########
 
+if [ -z "$RELAY_HOST" ]; then
+	echo
+	echo "Enter the relay host (i.e. smtp.provider.com) or leave empty for no relay host."
+	echo "Relay host must be listening on port 587."
+	echo
+	read -e -i "" -p "Relay host: " RELAY_HOST
+fi
+
+if [ ! -z "$RELAY_HOST" ] && [ -z "$RELAY_USERNAME" ]; then
+	echo
+	echo "Enter the relay username or leave empty for no username."
+	echo
+	read -e -i "" -p "Relay username: " RELAY_USERNAME
+fi
+
+if [ ! -z "$RELAY_USERNAME" ] && [ -z "$RELAY_PASSWORD" ]; then
+	echo
+	echo "Enter the relay password or leave empty for no password."
+	echo
+	read -e -i "" -p "Relay password: " RELAY_PASSWORD
+fi
+
+
 # Enable the 'submission' port 587 listener.
 sed -i "s/#submission/submission/" /etc/postfix/master.cf
+
+# Set relay host
+if [ ! -z "$RELAY_HOST" ]; then
+	tools/editconf.py /etc/postfix/main.cf \
+		relayhost=[$RELAY_HOST]:submission
+
+	if [ ! -z "$RELAY_USERNAME" ] && [ ! -z "$RELAY_PASSWORD" ]; then
+		echo [$RELAY_HOST]:submission $RELAY_USERNAME:$RELAY_PASSWORD >> /etc/postfix/sasl_passwd
+		postmap hash:/etc/postfix/sasl_passwd
+		chmod 600 /etc/postfix/sasl_passwd /etc/postfix/sasl_passwd.db
+		tools/editconf.py /etc/postfix/main.cf \
+			smtp_sasl_auth_enable=yes \
+			smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd \
+			smtp_sasl_security_options=noanonymous \
+			smtp_use_tls=yes \
+			smtp_tls_CAfile=/etc/ssl/certs/ca-certificates.crt \
+			smtp_sasl_tls_security_options=noanonymous
+	fi
+fi
 
 # Enable TLS and require it for all user authentication.
 tools/editconf.py /etc/postfix/main.cf \
@@ -79,7 +121,7 @@ tools/editconf.py /etc/postfix/main.cf \
 tools/editconf.py /etc/postfix/main.cf \
 	inet_interfaces=all \
 	myhostname=$PUBLIC_HOSTNAME\
-	smtpd_banner="\$myhostname ESMTP Hi, I'm a Mail-in-a-Box (Ubuntu/Postfix; see https://github.com/joshdata/mailinabox)" \
+	smtpd_banner="\$myhostname ESMTP Hi, I'm a Mail-in-a-Box Lite (Ubuntu/Postfix; see https://github.com/chadoe/mailinabox)" \
 	mydestination=localhost
 
 # Handle all local mail delivery by passing it directly to dovecot over LMTP.
