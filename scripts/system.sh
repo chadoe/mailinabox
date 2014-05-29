@@ -10,7 +10,7 @@ apt_install openssh-server
 
 # Install basic utilities.
 
-apt_install python3 wget curl bind9-host
+apt_install python3 wget curl
 
 # Turn on basic services:
 #
