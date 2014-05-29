@@ -65,11 +65,7 @@ fi
 
 # Start service configuration.
 . scripts/system.sh
-. scripts/dns.sh
 . scripts/mail.sh
-. scripts/dkim.sh
-. scripts/spamassassin.sh
-. scripts/dns_update.sh
 . scripts/web.sh
 . scripts/webmail.sh
 
