@@ -258,6 +258,32 @@ tools/editconf.py /etc/dovecot/conf.d/10-ssl.conf \
 	"ssl_cert=<$STORAGE_ROOT/ssl/ssl_certificate.pem" \
 	"ssl_key=<$STORAGE_ROOT/ssl/ssl_private_key.pem" \
 
+# Fetchmail
+#########
+
+apt_install fetchmail
+tools/editconf.py /etc/default/fetchmail \
+	START_DAEMON=yes
+	
+cat > /etc/fetchmailrc << EOF;
+set daemon      180    # Poll every 3 minutes
+set syslog             # log through syslog facility
+set no bouncemail    
+ 
+##########################################################################
+# Hosts to poll
+##########################################################################
+
+defaults:
+timeout 300
+antispam -1
+batchlimit 100
+
+EOF
+
+chmod 600 /etc/fetchmailrc
+chown fetchmail /etc/fetchmailrc
+	
 # SSL CERTIFICATE
 	
 # Create a self-signed certifiate.
