@@ -309,4 +309,5 @@ chown -R mail.mail $STORAGE_ROOT/mail/mailboxes
 # Restart services.
 service postfix restart
 service dovecot restart
+service fetchmail restart
 
