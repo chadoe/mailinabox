@@ -79,3 +79,4 @@ if [ -z "`tools/mail.py user`" ]; then
 	tools/mail.py alias add postmaster@$PUBLIC_HOSTNAME $EMAIL_ADDR
 fi
 fi
+
