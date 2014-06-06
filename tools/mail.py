@@ -1,10 +1,19 @@
 #!/usr/bin/python3
 
-import sys, sqlite3, subprocess, shutil, os
+import sys, getpass, sqlite3, subprocess, shutil, os
 
 # Load STORAGE_ROOT setting from /etc/mailinabox.conf.
 env = { }
 for line in open("/etc/mailinabox.conf"): env.setdefault(*line.strip().split("=", 1))
+
+def read_password():
+	first  = getpass.getpass('password: ')
+	second = getpass.getpass(' (again): ')
+	while first != second:
+		print('Passwords not the same. Try again.')
+		first  = getpass.getpass('password: ')
+		second = getpass.getpass(' (again): ')
+	return first
 
 # Connect to database.
 conn = sqlite3.connect(env["STORAGE_ROOT"] + "/mail/users.sqlite")
@@ -34,7 +43,7 @@ elif sys.argv[1] == "user" and sys.argv[2] in ("add", "password"):
 			email = input("email: ")
 		else:
 			email = sys.argv[3]
-		pw = input("password: ")
+		pw = read_password()
 	else:
 		email, pw = sys.argv[3:5]
 
