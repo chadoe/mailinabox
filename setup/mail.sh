@@ -1,3 +1,4 @@
+#!/bin/bash
 # SMTP/IMAP: Postfix and Dovecot
 ################################
 
@@ -48,8 +49,12 @@ if [ ! -z "$RELAY_USERNAME" ] && [ -z "$RELAY_PASSWORD" ]; then
 fi
 
 
-# Enable the 'submission' port 587 listener.
-sed -i "s/#submission/submission/" /etc/postfix/master.cf
+
+# Enable the 'submission' port 587 smtpd server, and give it a different
+# name in syslog to distinguish it from the port 25 smtpd server.
+tools/editconf.py /etc/postfix/master.cf -s -w \
+	"submission=inet n       -       -       -       -       smtpd
+	  -o syslog_name=postfix/submission"
 
 # Set relay host
 if [ ! -z "$RELAY_HOST" ]; then
