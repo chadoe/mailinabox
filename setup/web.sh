@@ -3,7 +3,7 @@
 
 source setup/functions.sh # load our functions
 
-apt_install nginx php5-cgi
+apt_install nginx php5-fpm
 
 rm -f /etc/nginx/sites-enabled/default
 
@@ -22,12 +22,6 @@ mkdir -p $STORAGE_ROOT/www/static
 cp conf/www_default.html $STORAGE_ROOT/www/static/index.html
 chown -R $STORAGE_USER $STORAGE_ROOT/www/static/index.html
 
-# Create an init script to start the PHP FastCGI daemon and keep it
-# running after a reboot. Allows us to serve Roundcube for webmail.
-rm -f /etc/init.d/php-fastcgi
-ln -s $(pwd)/conf/phpfcgi-initscript /etc/init.d/php-fastcgi
-update-rc.d php-fastcgi defaults
-
 # Start services.
 service nginx restart
-service php-fastcgi restart
+service php5-fpm restart
