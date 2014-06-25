@@ -31,7 +31,7 @@ if [ -z "$PUBLIC_HOSTNAME" ]; then
 	if [ -z "$DEFAULT_PUBLIC_HOSTNAME" ]; then
 		# set a default on first run
 		DEFAULT_PUBLIC_HOSTNAME=`hostname`
-fi
+	fi
 
 	read -e -i "$DEFAULT_PUBLIC_HOSTNAME" -p "Hostname: " PUBLIC_HOSTNAME
 fi
@@ -45,6 +45,9 @@ if [ -z "$PUBLIC_IP" ]; then
 	if [ -z "$DEFAULT_PUBLIC_IP" ]; then
 		# set a default on first run
 		DEFAULT_PUBLIC_IP=`hostname -i`
+	fi
+
+	read -e -i "$DEFAULT_PUBLIC_IP" -p "Public IP: " PUBLIC_IP
 fi
 
 # Create the user named "user-data" and store all persistent user

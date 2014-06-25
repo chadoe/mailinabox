@@ -22,6 +22,11 @@ mkdir -p $STORAGE_ROOT/www/static
 cp conf/www_default.html $STORAGE_ROOT/www/static/index.html
 chown -R $STORAGE_USER $STORAGE_ROOT/www/static/index.html
 
+#fpm settings
+sed -i "s/^;listen.owner = www-data/listen.owner = www-data/" /etc/php5/fpm/pool.d/www.conf
+sed -i "s/^;listen.group = www-data/listen.group = www-data/" /etc/php5/fpm/pool.d/www.conf
+sed -i "s/^;listen.mode = 0660/listen.mode = 0660/" /etc/php5/fpm/pool.d/www.conf
+
 # Start services.
 service nginx restart
 service php5-fpm restart
