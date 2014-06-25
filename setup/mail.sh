@@ -31,14 +31,24 @@ if [ -z "$RELAY_HOST" ]; then
 	echo "Enter the relay host (i.e. smtp.provider.com) or leave empty for no relay host."
 	echo "Relay host must be listening on port 587."
 	echo
-	read -e -i "" -p "Relay host: " RELAY_HOST
+	
+	if [ -z "$DEFAULT_RELAY_HOST" ]; then
+		# set a default on first run
+		DEFAULT_RELAY_HOST=smtp.hostname
+	fi
+	
+	read -e -i "$DEFAULT_RELAY_HOST" -p "Relay host: " RELAY_HOST
 fi
 
 if [ ! -z "$RELAY_HOST" ] && [ -z "$RELAY_USERNAME" ]; then
 	echo
 	echo "Enter the relay username or leave empty for no username."
 	echo
-	read -e -i "" -p "Relay username: " RELAY_USERNAME
+	if [ -z "$DEFAULT_RELAY_USERNAME" ]; then
+		# set a default on first run
+		DEFAULT_RELAY_USERNAME=smtp.hostname
+	fi
+	read -e -i "$RELAY_USERNAME" -p "Relay username: " RELAY_USERNAME
 fi
 
 if [ ! -z "$RELAY_USERNAME" ] && [ -z "$RELAY_PASSWORD" ]; then
@@ -48,7 +58,10 @@ if [ ! -z "$RELAY_USERNAME" ] && [ -z "$RELAY_PASSWORD" ]; then
 	read -e -i "" -p "Relay password: " RELAY_PASSWORD
 fi
 
-
+cat >> /etc/mailinabox.conf << EOF;
+RELAY_HOST=$RELAY_HOST
+RELAY_USERNAME=$RELAY_USERNAME
+EOF
 
 # Have postfix listen on all network interfaces, set our name (the Debian default seems to be localhost),
 # and set the name of the local machine to localhost for xxx@localhost mail (but I don't think this will have any effect because
