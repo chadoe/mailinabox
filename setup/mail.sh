@@ -151,12 +151,8 @@ tools/editconf.py /etc/postfix/main.cf \
 tools/editconf.py /etc/postfix/main.cf \
 	message_size_limit=134217728
 
-# In a basic setup we would handle all local mail delivery by passing
-# it directly to dovecot over LMTP. However when we setup spamassassin
-# we will instead pass mail to spampd which will in turn pass it off
-# to dovecot. So we will skip setting this here and instead set it in
-# spamassassin.sh.
-#tools/editconf.py /etc/postfix/main.cf virtual_transport=lmtp:unix:private/dovecot-lmtp
+# Handle all local mail delivery by passing it directly to dovecot over LMTP.
+tools/editconf.py /etc/postfix/main.cf virtual_transport=lmtp:unix:private/dovecot-lmtp
 
 # Postfix will query dovecot for user authentication.
 tools/editconf.py /etc/postfix/main.cf \
