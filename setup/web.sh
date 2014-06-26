@@ -16,7 +16,8 @@ PUBLIC_HOSTNAME_ESC=$(echo $PUBLIC_HOSTNAME|sed 's/[\\\/&]/\\&/g')
 cat conf/nginx.conf \
 	| sed "s/\$STORAGE_ROOT/$STORAGE_ROOT_ESC/g" \
 	| sed "s/\$PUBLIC_HOSTNAME/$PUBLIC_HOSTNAME_ESC/g" \
-	> /etc/nginx/sites-available/default
+	> /etc/nginx/sites-available/webmail
+ln -s /etc/nginx//sites-available/roundcube /etc/nginx//sites-enabled/webmail
 
 #fpm settings
 sed -i "s/^;listen.owner = www-data/listen.owner = www-data/" /etc/php5/fpm/pool.d/www.conf
