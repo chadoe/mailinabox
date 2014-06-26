@@ -3,6 +3,9 @@
 
 source setup/functions.sh # load our functions
 
+apt-get install software-properties-common
+add-apt-repository ppa:nginx/development
+apt-get update
 apt_install nginx php5-fpm
 
 STORAGE_ROOT_ESC=$(echo $STORAGE_ROOT|sed 's/[\\\/&]/\\&/g')
